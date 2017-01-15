@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link href="/static/css/signin.css" rel="stylesheet">
+<form class="form-signin" action="/login" method="POST">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <label for="inputUserName" class="sr-only">User name</label>
+    <input type="text" id="inputUserName" class="form-control" placeholder="User name" name="username" required autofocus>
+    <!--
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    -->
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <a href="/createuser"><h4>Create User?</h4></a>
+</form>
+
+{% endblock %}
