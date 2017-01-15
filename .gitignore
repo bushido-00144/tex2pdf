@@ -1,0 +1,4 @@
+id_rsa*
+*.swp
+*.pyc
+__pycache__/
