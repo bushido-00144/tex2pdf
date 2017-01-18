@@ -2,7 +2,7 @@ from flask import Flask, session, request, redirect, render_template, url_for
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'The secret key which ciphers the cookie'
 
-import modules.createKey as createKey
+import modules.Key as Key
 import modules.Git as Git
 import modules.utils as utils
 import modules.Tex2pdf as T2P
@@ -20,7 +20,7 @@ def before_request():
 @app.route("/")
 def index():
     username = session['username']
-    pub_key = createKey.getPubKey(username)
+    pub_key = Key.getPubKey(username)
     return render_template('index.html', ssh_key=pub_key)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -38,7 +38,7 @@ def login():
 def _is_account_valid():
     if request.form.get('username') is not None:
         username = request.form.get('username')
-        if createKey.getPubKey(username) != "ERROR":
+        if Key.getPubKey(username) != "ERROR":
             session['username'] = username
             return True
     return False
@@ -58,7 +58,7 @@ def logout():
 def createUser():
     if request.method == 'POST':
         username = request.form.get('username')
-        pub_key = createKey.createKey(username)
+        pub_key = Key.createKey(username)
         return redirect(url_for('login'))
     if request.method == 'GET':
         return render_template('createuser.html')
