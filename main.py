@@ -22,12 +22,15 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and _is_account_valid():
-        session['sessionid'] = utils.randomStr(16)
-        return redirect(url_for('index'))
+    if request.method == 'POST':
+        if _is_account_valid():
+            session['sessionid'] = utils.randomStr(16)
+            return redirect(url_for('index'))
+        else:
+            return render_template('createuser.html', errmessage='Cant find user')
     if request.method == 'GET':
         challenge=utils.randomStr(16)
-        return render_template('login.html', challenge=challenge)
+        return render_template('login.html')
 
 def _is_account_valid():
     if request.form.get('username') is not None:
