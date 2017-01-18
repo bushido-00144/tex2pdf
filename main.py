@@ -6,6 +6,7 @@ import modules.Key as Key
 import modules.Git as Git
 import modules.utils as utils
 import modules.Tex2pdf as T2P
+import os
 
 @app.before_request
 def before_request():
@@ -58,6 +59,8 @@ def logout():
 def createUser():
     if request.method == 'POST':
         username = request.form.get('username')
+        user_dir = os.path.abspath(os.path.dirname(__file__)) + '/users/' + username
+        os.mkdir(user_dir)
         pub_key = Key.createKey(username)
         return redirect(url_for('login'))
     if request.method == 'GET':
@@ -70,6 +73,6 @@ def webhook():
     repository_dir = Git.GitPull(repository_url)
     T2P.tex2pdf(repository_dir)
     return redirect(url_for('login'))
-    
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

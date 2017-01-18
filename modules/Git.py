@@ -6,7 +6,7 @@ def GitClone(repository_url, repo_path):
 def GitPull(repository_url, username):
     repository_name = repository_url.split('/')[-1].replace('.git', '')
     script_dir = os.path.abspath(os.path.dirname(__file__))
-    repositoory_dir = '/'.join(script_dir.split('/')[:-1]) + '/repos/' + username + '/' + repository_name
+    repositoory_dir = '/'.join(script_dir.split('/')[:-1]) + '/users/' + username + '/repos/' + repository_name
     if os.path.exists(repositoory_dir):
         os.chdir(repositoory_dir)
         os.system('git pull origin master')
