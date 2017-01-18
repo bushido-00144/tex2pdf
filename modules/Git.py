@@ -11,3 +11,4 @@ def GitPull(repository_url):
         os.system('git pull origin master')
     else:
         GitClone(repository_url, repositoory_dir)
+    return repositoory_dir

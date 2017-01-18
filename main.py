@@ -5,6 +5,7 @@ app.config['SECRET_KEY'] = 'The secret key which ciphers the cookie'
 import modules.createKey as createKey
 import modules.Git as Git
 import modules.utils as utils
+import modules.Tex2pdf as T2P
 
 @app.before_request
 def before_request():
@@ -63,7 +64,8 @@ def createUser():
 def webhook():
     event_data = request.json
     repository_url = event_data['repository']['git_ssh_url']
-    Git.GitPull(repository_url)
+    repository_dir = Git.GitPull(repository_url)
+    T2P.tex2pdf(repository_dir)
     return redirect(url_for('login'))
     
 if __name__ == "__main__":
