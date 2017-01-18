@@ -11,7 +11,7 @@ import modules.Tex2pdf as T2P
 def before_request():
     if session.get('sessionid') is not None:
         return
-    if request.path == '/login' or request.path == '/createuser':
+    if request.path == '/login' or request.path == '/createuser' or request.path == '/webhook':
         return
     if _is_static(request.path):
         return
