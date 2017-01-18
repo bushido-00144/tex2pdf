@@ -19,7 +19,9 @@ def before_request():
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    username = session['username']
+    pub_key = createKey.getPubKey(username)
+    return render_template('index.html', ssh_key=pub_key)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,6 +39,7 @@ def _is_account_valid():
     if request.form.get('username') is not None:
         username = request.form.get('username')
         if createKey.getPubKey(username) != "ERROR":
+            session['username'] = username
             return True
     return False
 

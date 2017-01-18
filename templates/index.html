@@ -1,16 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
-<!-- Form
-    ================================================== -->
-    <div class="form">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="/makepdf">
-                        <button class="col-sm-6 btn btn-primary">Make pdf</button>
-                    </a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/makepdf">
+                    <button class="col-sm-6 col-md-offset-3 btn btn-primary">Make pdf</button>
+                </a>
+                <br><br>
+                <button class="col-sm-6 col-md-offset-3 btn btn-primary" id="show-ssh-key">Show SSH key</button>
+                <br>
+                <br>
+                <div class="well "id="ssh-key" style="display:none;clear:both;word-wrap: break-word;">
+                    {{ ssh_key }}
                 </div>
             </div>
         </div>
     </div>
-    {% endblock %}
+    <script type='text/javascript'>
+        $('#show-ssh-key').click(function() {
+            $('#ssh-key').toggle();
+        });
+    </script>
+{% endblock %}
