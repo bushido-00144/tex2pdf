@@ -1,4 +1,4 @@
-from flask import Flask, session, request, redirect, render_template, url_for
+from flask import Flask, session, request, redirect, render_template, url_for, send_from_directory
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'The secret key which ciphers the cookie'
 
@@ -73,6 +73,12 @@ def webhook():
     repository_dir = Git.GitPull(repository_url)
     T2P.tex2pdf(repository_dir)
     return redirect(url_for('login'))
+
+@app.route('/pdf')
+def returnPdf():
+    username = session['username']
+    pdf_dir = os.getcwd() + '/users/' + username + '/files/'
+    return send_from_directory(pdf_dir, 'abst.pdf')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
