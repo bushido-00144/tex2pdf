@@ -38,7 +38,7 @@ def login():
         else:
             return render_template('createuser.html', errmessage='Cant find user')
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('login.html', title="Login")
 
 
 def _is_account_valid():
@@ -74,7 +74,7 @@ def createUser():
         Key.createKey(username)
         return redirect(url_for('login'))
     if request.method == 'GET':
-        return render_template('createuser.html')
+        return render_template('createuser.html', title="Sign up")
 
 
 @app.route('/webhook', methods=['POST'])
