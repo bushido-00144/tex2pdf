@@ -61,6 +61,7 @@ def createUser():
         username = request.form.get('username')
         user_dir = os.path.abspath(os.path.dirname(__file__)) + '/users/' + username
         os.mkdir(user_dir)
+        Git.createGitSSH(user_dir)
         pub_key = Key.createKey(username)
         return redirect(url_for('login'))
     if request.method == 'GET':
@@ -70,7 +71,8 @@ def createUser():
 def webhook():
     event_data = request.json
     repository_url = event_data['repository']['git_ssh_url']
-    repository_dir = Git.GitPull(repository_url)
+    username = event_data['user_name']
+    repository_dir = Git.GitPull(repository_url, username)
     T2P.tex2pdf(repository_dir)
     return redirect(url_for('login'))
 
