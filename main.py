@@ -61,6 +61,7 @@ def createUser():
         username = request.form.get('username')
         user_dir = os.path.abspath(os.path.dirname(__file__)) + '/users/' + username
         os.mkdir(user_dir)
+        os.mkdir(app.static_folder + '/files/' + username)
         Git.createGitSSH(user_dir)
         pub_key = Key.createKey(username)
         return redirect(url_for('login'))
@@ -76,11 +77,11 @@ def webhook():
     T2P.tex2pdf(repository_dir)
     return redirect(url_for('login'))
 
-@app.route('/pdf')
-def returnPdf():
+@app.route('/files/<path:filename>')
+def returnPdf(filename):
     username = session['username']
-    pdf_dir = os.getcwd() + '/users/' + username + '/files/'
-    return send_from_directory(pdf_dir, 'abst.pdf')
+    pdf_dir = app.static_folder + '/files/' + username
+    return send_from_directory(pdf_dir, filename)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
