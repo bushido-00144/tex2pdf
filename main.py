@@ -8,21 +8,26 @@ import modules.utils as utils
 import modules.Tex2pdf as T2P
 import os
 
+
 @app.before_request
 def before_request():
     if session.get('sessionid') is not None:
         return
-    if request.path == '/login' or request.path == '/createuser' or request.path == '/webhook':
+    if request.path == '/login' or \
+            request.path == '/createuser' or \
+            request.path == '/webhook':
         return
     if _is_static(request.path):
         return
     return redirect('/login')
+
 
 @app.route("/")
 def index():
     username = session['username']
     pub_key = Key.getPubKey(username)
     return render_template('index.html', ssh_key=pub_key)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -33,8 +38,8 @@ def login():
         else:
             return render_template('createuser.html', errmessage='Cant find user')
     if request.method == 'GET':
-        challenge=utils.randomStr(16)
         return render_template('login.html')
+
 
 def _is_account_valid():
     if request.form.get('username') is not None:
@@ -44,16 +49,19 @@ def _is_account_valid():
             return True
     return False
 
+
 def _is_static(request_path):
     top_path = request_path.split('/')[1]
     if top_path == 'static':
         return True
     return False
 
+
 @app.route('/logout', methods=['GET'])
 def logout():
     session.pop('sessionid', None)
     return redirect(url_for('login'))
+
 
 @app.route('/createuser', methods=['GET', 'POST'])
 def createUser():
@@ -63,10 +71,11 @@ def createUser():
         os.mkdir(user_dir)
         os.mkdir(app.static_folder + '/files/' + username)
         Git.createGitSSH(user_dir)
-        pub_key = Key.createKey(username)
+        Key.createKey(username)
         return redirect(url_for('login'))
     if request.method == 'GET':
         return render_template('createuser.html')
+
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -76,6 +85,7 @@ def webhook():
     repository_dir = Git.GitPull(repository_url, username)
     T2P.tex2pdf(repository_dir)
     return redirect(url_for('login'))
+
 
 @app.route('/files/<path:filename>')
 def returnPdf(filename):
