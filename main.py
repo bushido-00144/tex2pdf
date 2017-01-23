@@ -83,7 +83,7 @@ def webhook():
     repository_url = event_data['repository']['git_ssh_url']
     username = event_data['user_name']
     repository_dir = Git.GitPull(repository_url, username)
-    T2P.tex2pdf(repository_dir)
+    T2P.tex2pdf(repository_dir, username)
     return redirect(url_for('login'))
 
 
