@@ -23,7 +23,7 @@ def GitPull(repository_url, username):
 def createGitSSH(user_dir):
     home_dir = os.path.expanduser('~')
     username = user_dir.split('/')[-1]
-    key_path = home_dir + '/.ssh/keys' + username + 'id_rsa'
+    key_path = home_dir + '/.ssh/keys/' + username + '/id_rsa'
     script_path = user_dir + '/git-ssh.sh'
     script = '''
     #!/bin/sh
